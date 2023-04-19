@@ -8,6 +8,7 @@ import json
 import configparser
 import os
 from urllib import parse
+import string
 app = Flask(__name__, static_url_path='/static')
 UPLOAD_FOLDER = 'static'
 ALLOWED_EXTENSIONS = set(['pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -169,10 +170,22 @@ def sendTextMessageToMe():
 
 
 def getNameEmojiMessage():
-    lookUpStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    lookUpStr = string.ascii_uppercase + string.ascii_lowercase
+    #lookUpStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     productId = "5ac21a8c040ab15980c9b43f"
-    name = ""
+    name = "Miles"
+    emojis = list()
+    text = "$" * len(name)
+    for index,char in enumerate(name):
+        emojis.append({
+            "index":index,
+            "productId":productId,
+            "emojiId": str(lookUpStr.index(char) + 1).zfill(3)
+        })
     message = dict()
+    message['type'] = "text"
+    message['text'] = text
+    message['emojis'] = emojis
     return message
 
 
