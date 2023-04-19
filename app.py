@@ -190,12 +190,56 @@ def getNameEmojiMessage():
 
 
 def getCarouselMessage(data):
-    message = dict()
+    message = {
+        "type": "template",
+        "altText": "this is a image carousel template",
+        "template": {
+            "type": "image_carousel",
+            "columns": [
+            {
+                "imageUrl": F"{end_point}/static/taipei_101.jpeg",
+                "action": {
+                "type": "postback",
+                "label": "台北101",
+                "data": json.dumps(data)
+                }
+            },
+            {
+                "imageUrl": F"{end_point}/static/taipei_1.jpeg",
+                "action": {
+                "type": "postback",
+                "label": "台北101",
+                "data": json.dumps(data)
+                }
+            }
+            ]
+        }
+        }
     return message
 
 
 def getLocationConfirmMessage(title, latitude, longitude):
-    message = dict()
+    data = json.dumps({'title':title,'latitude':latitude,'longitude':longitude,'action':'get_near'})
+    message = {
+        "type": "template",
+        "altText": "this is a confirm template",
+        "template": {
+            "type": "confirm",
+            "text": F"是否要規劃{title}附近的景點？",
+            "actions": [
+                {
+                    "type": "postback",
+                    "label": "是",
+                    "data": data
+                },
+                {
+                "type": "message",
+                "label": "否",
+                "text": "no"
+                }
+            ]
+        }
+    }
     return message
 
 
@@ -217,7 +261,7 @@ def getTaipei101LocationMessage():
     message = {
         "type": "location",
         "title": "台北101購物中心",
-        "address": "110台北市信義區市府路45 號",
+        "address": "110台北市信義區市府路45號",
         "latitude": 25.0336544,
         "longitude": 121.5628706,
     }
